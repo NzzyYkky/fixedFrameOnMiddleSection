@@ -1,10 +1,10 @@
 # fixedFrameOnMiddleSection
 ## Usage
 
----
+```bash
 npm install
 npm run dev
----
+```
 
 ## セクション間だけ固定。
 position: sticky;で最初は実装したもののフレームをstickyで固定してしまうとセクションの中身の要素がクリックができなくなってしまった為。
