@@ -1,5 +1,7 @@
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { getMaxScrollX } from './getMaxScrollX';
+
 gsap.registerPlugin(ScrollTrigger);
 
 export function fixedFrame() {
@@ -14,19 +16,6 @@ export function fixedFrame() {
 		...Array.from(box02Elements),
 	];
 
-	function getMaxScrollX(): number {
-		// ビューポートの幅
-		const viewportWidth =
-			document.documentElement.clientWidth || window.innerWidth;
-		// ページの実際のコンテンツの幅
-		const contentWidth =
-			document.documentElement.scrollWidth || document.body.scrollWidth;
-
-		// 横スクロール可能な最大値を計算
-		const maxScrollX: number = contentWidth - viewportWidth;
-		return maxScrollX;
-	}
-
 	window.addEventListener('resize', function () {
 		const containerWidth = (
 			document.querySelector('.js-container') as HTMLElement
@@ -37,9 +26,9 @@ export function fixedFrame() {
 
 		if (containerWidth <= 1080 && containerWidth >= 769) {
 			window.addEventListener('scroll', () => {
-				boxElements[0].style.left = Math.floor(-window.pageXOffset) + 'px';
+				boxElements[0].style.left = Math.floor(-window.scrollX) + 'px';
 				boxElements[1].style.right =
-					Math.floor(-getMaxScrollX() + window.pageXOffset) + 'px';
+					Math.floor(-getMaxScrollX() + window.scrollX) + 'px';
 			});
 		}
 	});
