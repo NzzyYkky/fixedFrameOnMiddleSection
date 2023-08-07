@@ -17,21 +17,21 @@ export function fixedFrame() {
 	];
 
 	window.addEventListener('resize', function () {
-		const containerWidth = (
-			document.querySelector('.js-container') as HTMLElement
-		).offsetWidth;
+		const windowWidth = window.innerWidth;
 
-		boxElements[0].style.left = 0;
-		boxElements[1].style.right = 0;
-
-		if (containerWidth <= 1080 && containerWidth >= 769) {
-			window.addEventListener('scroll', () => {
-				boxElements[0].style.left = Math.floor(-window.scrollX) + 'px';
-				boxElements[1].style.right =
-					Math.floor(-getMaxScrollX() + window.scrollX) + 'px';
-			});
+		if (windowWidth <= 1080 && windowWidth >= 769) {
+			window.addEventListener('scroll', setResizeScrollValue);
+		} else {
+			window.removeEventListener('scroll', setResizeScrollValue); // スクロールイベントを削除する
+			boxElements?.forEach((item) => item.removeAttribute('style'));
 		}
 	});
+
+	function setResizeScrollValue(): void {
+		boxElements[0].style.left = Math.floor(-window.scrollX) + 'px';
+		boxElements[1].style.right =
+			Math.floor(-getMaxScrollX() + window.scrollX) + 'px';
+	}
 
 	boxElements.forEach((el) => {
 		gsap.to(el, {
